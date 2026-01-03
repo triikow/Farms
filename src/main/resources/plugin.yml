@@ -1,0 +1,4 @@
+name: Farms
+version: '0.0.1'
+main: com.github.triikow.farms.Farms
+api-version: '1.21'
