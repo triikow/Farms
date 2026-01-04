@@ -1,24 +1,23 @@
 package com.github.triikow.farms;
 
 import com.github.triikow.farms.command.FarmCommand;
+import com.github.triikow.farms.world.WorldService;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Farms extends JavaPlugin {
 
+    private WorldService worldService;
+
     @Override
     public void onEnable() {
-        this.getLifecycleManager().registerEventHandler(
-                LifecycleEvents.COMMANDS,
-                commands -> commands.registrar().register(
-                        FarmCommand.create()
-                )
-        );
-    }
+        this.worldService = new WorldService();
 
-
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
+        this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
+            event.registrar().register(
+                    FarmCommand.create(worldService),
+                    "Farms root command"
+            );
+        });
     }
 }
