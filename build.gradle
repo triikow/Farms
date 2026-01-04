@@ -12,15 +12,23 @@ repositories {
         name = "papermc-repo"
         url = "https://repo.papermc.io/repository/maven-public/"
     }
+    maven {
+        name = "EngineHub"
+        url = "https://maven.enginehub.org/repo/"
+    }
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
+    compileOnly "io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT"
+    compileOnly "com.sk89q.worldedit:worldedit-bukkit:7.3.18"
 }
 
 tasks {
     runServer {
         minecraftVersion("1.21.11")
+        downloadPlugins {
+            hangar("Multiverse-Core", "5.4.0")
+        }
     }
 }
 
