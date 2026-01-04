@@ -11,3 +11,6 @@ permissions:
   farms.admin.setup:
     description: Allows using /farm admin setup to create void world
     default: op
+  farms.create:
+    description: Allows using /farm create
+    default: true
