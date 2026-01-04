@@ -8,10 +8,14 @@ public final class Farms extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands -> {
-            commands.registrar().register(FarmCommand.createCommand());
-        });
+        this.getLifecycleManager().registerEventHandler(
+                LifecycleEvents.COMMANDS,
+                commands -> commands.registrar().register(
+                        FarmCommand.create()
+                )
+        );
     }
+
 
     @Override
     public void onDisable() {

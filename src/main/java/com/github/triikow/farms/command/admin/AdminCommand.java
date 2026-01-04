@@ -1,17 +1,16 @@
-package com.github.triikow.farms.command;
+package com.github.triikow.farms.command.admin;
 
-import com.github.triikow.farms.command.admin.AdminCommand;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 
-public final class FarmCommand {
+public final class AdminCommand {
 
-    private FarmCommand() {}
+    private AdminCommand() {}
 
     public static LiteralCommandNode<CommandSourceStack> create() {
-        return Commands.literal("farm")
-                .then(AdminCommand.create())
+        return Commands.literal("admin")
+                .then(AdminWorldCommand.create())
                 .build();
     }
 }
