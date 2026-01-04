@@ -27,7 +27,7 @@ tasks {
     runServer {
         minecraftVersion("1.21.11")
         downloadPlugins {
-            hangar("Multiverse-Core", "5.4.0")
+            modrinth("FastAsyncWorldEdit", "2.14.3")
         }
     }
 }

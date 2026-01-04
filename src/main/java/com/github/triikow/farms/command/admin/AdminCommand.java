@@ -12,7 +12,7 @@ public final class AdminCommand {
 
     public static LiteralCommandNode<CommandSourceStack> create(@NotNull WorldService worldService) {
         return Commands.literal("admin")
-                .then(new AdminWorldCommand(worldService).create())
+                .then(new AdminSetupCommand(worldService).create())
                 .build();
     }
 }
