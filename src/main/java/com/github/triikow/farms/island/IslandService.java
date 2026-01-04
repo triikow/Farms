@@ -37,72 +37,59 @@ public final class IslandService {
     }
 
     private IslandPosition computePosition(int islandNumber) {
-        final int spacing = MIN_ISLAND_DISTANCE; // 3000
+        final int spacing = MIN_ISLAND_DISTANCE;
         final int minSteps = (int) Math.ceil((double) MIN_SPAWN_RADIUS / spacing);
 
-        int accepted = 0;
-        int stepIndex = 0;
+        int n = islandNumber;
 
-        while (true) {
-            GridPos p = spiral(stepIndex++);
+        int r = minSteps;
+        int ringCount = 8 * r; // r>=1 => 8r
 
-            int ring = Math.max(Math.abs(p.i), Math.abs(p.j));
-
-            if (ring < minSteps) {
-                continue;
-            }
-
-            if (accepted == islandNumber) {
-                int x = p.i * spacing;
-                int z = p.j * spacing;
-                return new IslandPosition(x, z);
-            }
-
-            accepted++;
+        while (n >= ringCount) {
+            n -= ringCount;
+            r++;
+            ringCount = 8 * r;
         }
-    }
 
-    private GridPos spiral(int n) {
-        if (n == 0) return new GridPos(0, 0);
+        int i;
+        int j;
 
-        int i = 0;
-        int j = 0;
+        final int topLen = 2 * r + 1;
 
-        int steps = 1;
-        int index = 0;
+        if (n < topLen) {
+            i = -r + n;
+            j =  r;
+        } else {
+            n -= topLen;
 
-        while (true) {
-            for (int s = 0; s < steps; s++) {
-                i++;
-                index++;
-                if (index == n) return new GridPos(i, j);
+            final int rightLen = 2 * r;
+            if (n < rightLen) {
+                i =  r;
+                j =  r - 1 - n;
+            } else {
+                n -= rightLen;
+
+                final int bottomLen = 2 * r;
+                if (n < bottomLen) {
+                    i =  r - 1 - n;
+                    j = -r;
+                } else {
+                    n -= bottomLen;
+
+                    final int leftLen = 2 * r - 1;
+
+                    if (n < 0 || n >= leftLen) {
+                        throw new IllegalStateException("Perimeter index out of bounds: n=" + n + " leftLen=" + leftLen + " r=" + r);
+                    }
+
+                    i = -r;
+                    j = -r + 1 + n;
+                }
             }
-
-            for (int s = 0; s < steps; s++) {
-                j++;
-                index++;
-                if (index == n) return new GridPos(i, j);
-            }
-
-            steps++;
-
-            for (int s = 0; s < steps; s++) {
-                i--;
-                index++;
-                if (index == n) return new GridPos(i, j);
-            }
-
-            for (int s = 0; s < steps; s++) {
-                j--;
-                index++;
-                if (index == n) return new GridPos(i, j);
-            }
-
-            steps++;
         }
-    }
 
-    private record GridPos(int i, int j) {}
+        return new IslandPosition(i * spacing, j * spacing);
+    }
 
     private void saveQuietly() {
         try {
