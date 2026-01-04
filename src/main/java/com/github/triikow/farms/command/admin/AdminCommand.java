@@ -4,15 +4,16 @@ import com.github.triikow.farms.world.WorldService;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public final class AdminCommand {
 
     private AdminCommand() {}
 
-    public static LiteralCommandNode<CommandSourceStack> create(@NotNull WorldService worldService) {
+    public static LiteralCommandNode<CommandSourceStack> create(JavaPlugin plugin, WorldService worldService) {
         return Commands.literal("admin")
-                .then(new AdminSetupCommand(worldService).create())
+                .then(new AdminReloadCommand(plugin).create())
+                .then(new AdminSetupCommand(plugin, worldService).create())
                 .build();
     }
 }

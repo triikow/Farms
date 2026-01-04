@@ -5,15 +5,15 @@ import com.github.triikow.farms.world.WorldService;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public final class FarmCommand {
 
     private FarmCommand() {}
 
-    public static LiteralCommandNode<CommandSourceStack> create(@NotNull WorldService worldService) {
+    public static LiteralCommandNode<CommandSourceStack> create(JavaPlugin plugin, WorldService worldService) {
         return Commands.literal("farm")
-                .then(AdminCommand.create(worldService))
+                .then(AdminCommand.create(plugin, worldService))
                 .build();
     }
 }

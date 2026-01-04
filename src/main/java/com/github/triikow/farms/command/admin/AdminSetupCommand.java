@@ -7,19 +7,18 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public final class AdminSetupCommand {
 
-    private static final String FARMS_WORLD_NAME = "farms";
-
+    private final JavaPlugin plugin;
     private final WorldService worldService;
 
-    public AdminSetupCommand(@NotNull WorldService worldService) {
+    public AdminSetupCommand(JavaPlugin plugin, WorldService worldService) {
+        this.plugin = plugin;
         this.worldService = worldService;
     }
 
@@ -32,24 +31,50 @@ public final class AdminSetupCommand {
 
     private int execute(CommandContext<CommandSourceStack> ctx) {
         CommandSender sender = ctx.getSource().getSender();
-        World world = Bukkit.getWorld(FARMS_WORLD_NAME);
+        String worldName = plugin.getConfig().getString("world.name", "farms");
+        String messagePrefix = plugin.getConfig().getString("messages.prefix", "");
+        World world = Bukkit.getWorld(worldName);
 
         if (world == null) {
-            sender.sendRichMessage("<yellow>[Farms]</yellow> Creating farms void world...");
-            world = worldService.createVoidWorld(FARMS_WORLD_NAME);
+            String creating = plugin.getConfig().getString(
+                    "messages.admin.setup.creating-world",
+                    "Creating 'farms' void world..."
+            ).replace("%world%", worldName);;
+            sender.sendRichMessage(messagePrefix + creating);
+
+            world = worldService.createVoidWorld(worldName);
         } else {
-            sender.sendRichMessage("<yellow>[Farms]</yellow> '" + FARMS_WORLD_NAME + "' already exists...");
+            String exists = plugin.getConfig().getString(
+                    "messages.admin.setup.already-exists",
+                    "World 'farms' already exists."
+            ).replace("%world%", worldName);
+
+            sender.sendRichMessage(messagePrefix + exists);
             return Command.SINGLE_SUCCESS;
         }
 
         if (world == null) {
-            sender.sendRichMessage("<red>[Farms]</red> Failed to create farms world.");
+            String failed = plugin.getConfig().getString(
+                    "messages.admin.setup.failed-create",
+                    "<red>Failed to create 'farms' world.</red>"
+            ).replace("%world%", worldName);
+            sender.sendRichMessage(messagePrefix + failed);
             return Command.SINGLE_SUCCESS;
         }
 
-        sender.sendRichMessage("<green>[Farms]</green> Farms void world created.");
+        String created = plugin.getConfig().getString(
+                "messages.admin.setup.created",
+                "<green>'farms' void world created.</green>"
+        ).replace("%world%", worldName);
+        sender.sendRichMessage(messagePrefix + created);
 
         if (sender instanceof Player player) {
+            String teleporting = plugin.getConfig().getString(
+                    "messages.admin.setup.teleporting",
+                    "Teleporting you to the 'farms' spawn..."
+            ).replace("%world%", worldName);;
+            sender.sendRichMessage(messagePrefix + teleporting);
+
             player.teleport(world.getSpawnLocation().toCenterLocation());
         }
 

@@ -11,11 +11,13 @@ public final class Farms extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        saveDefaultConfig();
+
         this.worldService = new WorldService();
 
         this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             event.registrar().register(
-                    FarmCommand.create(worldService),
+                    FarmCommand.create(this, worldService),
                     "Farms root command"
             );
         });
