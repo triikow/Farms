@@ -1,6 +1,17 @@
 world:
   name: "farms"
 
+schematics:
+  basic:
+    display-name: "<green>Basic Island</green>"
+    item: "GRASS_BLOCK"
+    file: "island.schem"
+  desert:
+    display-name: "<yellow>Desert Island</yellow>"
+    item: "SAND"
+    file: "desert.schem"
+
+
 messages:
   prefix: "<b><yellow>Farms</yellow><dark_gray>》<dark_gray></b> "
 

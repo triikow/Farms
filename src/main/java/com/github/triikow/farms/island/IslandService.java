@@ -24,11 +24,9 @@ public final class IslandService {
         this.yaml = YamlConfiguration.loadConfiguration(file);
     }
 
-    public synchronized PlayerIsland getOrAllocate(UUID uuid) {
+    public synchronized PlayerIsland getOrAllocate(UUID uuid, String schematicKey) {
         PlayerIsland existing = getIsland(uuid);
-        if (existing != null) {
-            return existing;
-        }
+        if (existing != null) return existing;
 
         int index = yaml.getInt("nextIndex", 0);
         yaml.set("nextIndex", index + 1);
@@ -40,10 +38,11 @@ public final class IslandService {
         yaml.set(base + ".x", pos.x());
         yaml.set(base + ".z", pos.z());
         yaml.set(base + ".pasted", false);
+        yaml.set(base + ".schematic", schematicKey);
 
         saveQuietly();
 
-        return new PlayerIsland(uuid, index, pos, false);
+        return new PlayerIsland(uuid, index, pos, false, schematicKey);
     }
 
     public synchronized void markPasted(UUID uuid) {
@@ -56,16 +55,15 @@ public final class IslandService {
 
     public synchronized PlayerIsland getIsland(UUID uuid) {
         String base = "players." + uuid;
-        if (!yaml.contains(base + ".x") || !yaml.contains(base + ".z")) {
-            return null;
-        }
+        if (!yaml.contains(base + ".x") || !yaml.contains(base + ".z")) return null;
 
         int x = yaml.getInt(base + ".x");
         int z = yaml.getInt(base + ".z");
         int index = yaml.getInt(base + ".index", -1);
         boolean pasted = yaml.getBoolean(base + ".pasted", false);
+        String schematic = yaml.getString(base + ".schematic", "basic");
 
-        return new PlayerIsland(uuid, index, new IslandPosition(x, z), pasted);
+        return new PlayerIsland(uuid, index, new IslandPosition(x, z), pasted, schematic);
     }
 
     private IslandPosition computePosition(int islandNumber) {
@@ -146,5 +144,5 @@ public final class IslandService {
 
     public record IslandPosition(int x, int z) {}
 
-    public record PlayerIsland(UUID uuid, int index, IslandPosition position, boolean pasted) {}
+    public record PlayerIsland(UUID uuid, int index, IslandPosition position, boolean pasted, String schematicKey) {}
 }

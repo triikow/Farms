@@ -1,8 +1,9 @@
 package com.github.triikow.farms;
 
-import com.github.triikow.farms.command.FarmCommand;
+import com.github.triikow.farms.command.FarmRootCommand;
 import com.github.triikow.farms.island.IslandSchematicService;
 import com.github.triikow.farms.island.IslandService;
+import com.github.triikow.farms.schematic.SchematicRegistry;
 import com.github.triikow.farms.world.WorldService;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.World;
@@ -15,6 +16,7 @@ public final class Farms extends JavaPlugin {
     private WorldService worldService;
     private IslandService islandService;
     private IslandSchematicService islandSchematicService;
+    private SchematicRegistry schematicRegistry;
 
     @Override
     public void onEnable() {
@@ -36,6 +38,9 @@ public final class Farms extends JavaPlugin {
         this.islandService = new IslandService(this);
         this.islandSchematicService = new IslandSchematicService(schematicsDir);
 
+        this.schematicRegistry = new SchematicRegistry();
+        this.schematicRegistry.reload(getConfig(), getDataFolder(), getLogger());
+
         String worldName = getConfig().getString("world.name", "farms");
         World farmsWorld = worldService.loadOrCreateVoidWorld(worldName);
 
@@ -52,7 +57,7 @@ public final class Farms extends JavaPlugin {
 
         this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             event.registrar().register(
-                    FarmCommand.create(this, worldService, islandService, islandSchematicService),
+                    FarmRootCommand.create(this, worldService, islandService, islandSchematicService, schematicRegistry),
                     "Farms root command"
             );
         });

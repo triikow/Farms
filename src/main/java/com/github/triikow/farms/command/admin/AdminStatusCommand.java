@@ -42,11 +42,9 @@ public final class AdminStatusCommand {
         String rawName = plugin.getConfig().getString("world.name", "farms");
         String worldName = worldService.normalizeWorldName(rawName);
 
-        // world exists on disk
         File folder = new File(Bukkit.getWorldContainer(), worldName);
         boolean existsOnDisk = folder.exists() && folder.isDirectory();
 
-        // world loaded
         World world = Bukkit.getWorld(worldName);
         boolean loaded = (world != null);
 

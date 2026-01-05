@@ -7,6 +7,7 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
 import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
@@ -15,8 +16,6 @@ import org.bukkit.Location;
 import org.bukkit.World;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 
 public final class IslandSchematicService {
 
@@ -27,8 +26,8 @@ public final class IslandSchematicService {
         this.schematicsDir = schematicsDir;
     }
 
-    public Location pasteIsland(World world, int centerX, int centerZ) {
-        File file = new File(schematicsDir, "island.schem");
+    public Location pasteIsland(World world, int centerX, int centerZ, String schematicFileName) {
+        File file = new File(schematicsDir, schematicFileName);
         if (!file.exists()) {
             throw new IllegalStateException("Missing schematic: " + file.getAbsolutePath());
         }
@@ -59,16 +58,15 @@ public final class IslandSchematicService {
             throw new IllegalArgumentException("Unknown schematic format: " + file.getName());
         }
 
-        try (FileInputStream fis = new FileInputStream(file)) {
-            return format.getReader(fis).read();
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to read schematic: " + file.getAbsolutePath(), e);
+        try (ClipboardReader reader = format.getReader(new java.io.FileInputStream(file))) {
+            return reader.read();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to load schematic: " + file.getName(), e);
         }
     }
 
     public Location getIslandSpawn(World world, int centerX, int centerZ) {
         return new Location(world, centerX + 0.5, Y + 1, centerZ + 0.5);
     }
-
-
 }
+

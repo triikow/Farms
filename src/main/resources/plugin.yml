@@ -17,6 +17,12 @@ permissions:
   farms.admin.status:
     description: Shows Farm diagnostics and status info
     default: op
-  farms.create:
-    description: Allows using /farm create
+  farms.farm:
+    description: Allows using /farm
     default: true
+  farms.schematic.basic:
+    description: Allows selecting basic schematic
+    default: true
+  farms.schematic.desert:
+    description: Allows selecting desert schematic
+    default: op
