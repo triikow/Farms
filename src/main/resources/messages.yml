@@ -1,0 +1,75 @@
+common:
+  prefix: "<b><yellow>Farms</yellow><dark_gray>》</dark_gray></b> "
+  yes: "<green>Yes</green>"
+  no: "<red>No</red>"
+
+  only_players: "<red>Only players can use this command.</red>"
+  no_permission: "<red>You do not have permission.</red>"
+  error: "<red>Something went wrong.</red>"
+
+farm:
+  no_presets: "<red>No island presets are available.</red>"
+  already_has_farm: "<gray>You already have an island.</gray>"
+  creating: "<gray>Creating your island (<white>{preset}</white>)...</gray>"
+  created: "<green>Your island has been created.</green>"
+  teleporting: "<gray>Teleporting you to your island...</gray>"
+  teleported: "<green>Teleported to your island.</green>"
+  no_farm_yet: "<red>You do not have an island yet.</red>"
+  pasted_failed: "<red>Failed to paste the schematic. Contact an admin.</red>"
+
+admin:
+  reload:
+    success: "<green>Reloaded config.yml, presets.yml, messages.yml and upgrades.yml.</green>"
+
+  tp:
+    success: "<gray>Teleported to farms spawn (<white>{world}</white>).</gray>"
+    world_unavailable: "<red>Farms world is not available.</red>"
+
+  status:
+    header: "<dark_gray>Status</dark_gray>"
+    world: "<gray>World:</gray> <white>{world}</white>"
+    world_exists: "  <gray><yellow>•</yellow> Exists on disk:</gray> {exists}"
+    world_loaded: "  <gray><yellow>•</yellow> Loaded:</gray> {loaded}"
+    world_spawn: "  <gray><yellow>•</yellow> Spawn:</gray> <white>{x}, {y}, {z}</white>"
+    world_spawn_unloaded: "  <gray><yellow>•</yellow> Spawn:</gray> <dark_gray>(world not loaded)</dark_gray>"
+    world_loaded_chunks: "  <gray><yellow>•</yellow> Loaded chunks:</gray> <white>{chunks}</white>"
+
+    farms_header: "<gray>Farms:</gray>"
+    farms_count: "  <gray><yellow>•</yellow> Count:</gray> <white>{count}</white>"
+    allocator_next_index: "  <gray><yellow>•</yellow> Allocator nextIndex:</gray> <white>{next}</white>"
+    presets_count: "  <gray><yellow>•</yellow> Presets:</gray> <white>{count}</white>"
+
+    integrations_header: "<gray>Integrations:</gray>"
+    worldedit_present: "  <gray><yellow>•</yellow> WorldEdit:</gray> {present}"
+    demo_schematics_present: "  <gray><yellow>•</yellow> Demo schematics present:</gray> {present}"
+
+ui:
+  select:
+    title: "<green>Choose your island</green>"
+    lore_click: "<gray>Click to select</gray>"
+
+  confirm:
+    title: "<yellow>Confirm selection</yellow>"
+    confirm_item: "<green>Confirm</green>"
+    confirm_lore:
+      - "<gray>This will create your island.</gray>"
+    cancel_item: "<red>Cancel</red>"
+    cancel_lore:
+      - "<gray>Go back.</gray>"
+    selected_item: "<gray>Selected:</gray> <white>{preset}</white>"
+
+  manage:
+    title: "<green>Your Farm</green>"
+    home_item: "<green>Home</green>"
+    home_lore:
+      - "<gray>Teleport to your island home.</gray>"
+
+    upgrades_item: "<gray>Upgrades</gray> <dark_gray>(coming soon)</dark_gray>"
+    upgrades_lore:
+      - "<dark_gray>Not implemented yet.</dark_gray>"
+
+    team_item: "<gray>Team</gray> <dark_gray>(coming soon)</dark_gray>"
+    team_lore:
+      - "<dark_gray>Not implemented yet.</dark_gray>"
+
+    coming_soon: "<gray>Coming soon.</gray>"

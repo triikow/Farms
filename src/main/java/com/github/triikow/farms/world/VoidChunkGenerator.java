@@ -10,7 +10,9 @@ import java.util.Random;
 public final class VoidChunkGenerator extends ChunkGenerator {
 
     @Override
-    public void generateNoise(WorldInfo worldInfo, Random random, int chunkX, int chunkZ, ChunkData chunkData) {}
+    public void generateNoise(WorldInfo worldInfo, Random random, int chunkX, int chunkZ, ChunkData chunkData) {
+        // void
+    }
 
     @Override
     public Location getFixedSpawnLocation(org.bukkit.World world, Random random) {

@@ -1,0 +1,7 @@
+upgrades:
+  example_upgrade:
+    display_name: "<green>Example Upgrade</green>"
+    max_level: 5
+    description:
+      - "<gray>Design-ready scaffold.</gray>"
+      - "<dark_gray>Gameplay coming soon.</dark_gray>"

@@ -1,27 +1,30 @@
 world:
   name: "farms"
 
+  spawn:
+    x: 0
+    y: 61
+    z: 0
+
+    platform:
+      y: 60
+      radius: 3
+      material: "LIGHT_GRAY_STAINED_GLASS"
+
+  keep_spawn_in_memory: false
+
+  gamerules:
+    do_mob_spawning: false
+    do_daylight_cycle: false
+    do_weather_cycle: false
+
+placement:
+  spacing: 3000
+  spawn_buffer: 12000
+
 schematics:
-  basic:
-    display-name: "<green>Basic Island</green>"
-    item: "GRASS_BLOCK"
-    file: "island.schem"
-  desert:
-    display-name: "<yellow>Desert Island</yellow>"
-    item: "SAND"
-    file: "desert.schem"
+  paste_y: 60
+  ignore_air: true
 
-
-messages:
-  prefix: "<b><yellow>Farms</yellow><dark_gray>》<dark_gray></b> "
-
-  admin:
-    reload:
-      success: "<green>Configuration reloaded.</green>"
-
-    setup:
-      creating-world: "<gray>Creating '<white>%world%</white>' void world...</gray>"
-      already-exists: "<gray>World '<white>%world%</white>' already exists.</gray>"
-      failed-create: "<red>Failed to create '<white>%world%</white>' world.</red>"
-      created: "<green>'<white>%world%</white>' void world created.</green>"
-      teleporting: "<gray>Teleporting you to the '<white>%world%</white>' spawn...</gray>"
+teleport:
+  fallback_y: 61

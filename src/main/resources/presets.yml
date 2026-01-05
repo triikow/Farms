@@ -1,0 +1,16 @@
+presets:
+  basic:
+    name: "<green>Basic Island</green>"
+    icon: "GRASS_BLOCK"
+    schematic_file: "schematics/island_basic.schem"
+    description:
+      - "<gray>A simple starter island.</gray>"
+      - "<dark_gray>Good for new players.</dark_gray>"
+
+  desert:
+    name: "<yellow>Desert Island</yellow>"
+    icon: "SAND"
+    schematic_file: "schematics/island_desert.schem"
+    description:
+      - "<gray>A hot and dry start.</gray>"
+      - "<dark_gray>Bring water.</dark_gray>"

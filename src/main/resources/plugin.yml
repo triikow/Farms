@@ -1,28 +1,28 @@
 name: Farms
-version: '0.0.1'
-main: com.github.triikow.farms.Farms
-api-version: '1.21'
-softdepend: [WorldEdit]
+version: "1.0.0"
+main: com.github.triikow.farms.plugin.FarmsPlugin
+api-version: "1.21"
+
+depend: [WorldEdit]
 
 permissions:
-  farms.admin:
-    description: Allows admin base command
-    default: op
-  farms.admin.reload:
-    description: Allows reloading the Farms config
-    default: op
-  farms.admin.tp:
-    description: Allows teleporting to the Farms world
-    default: op
-  farms.admin.status:
-    description: Shows Farm diagnostics and status info
-    default: op
   farms.farm:
     description: Allows using /farm
     default: true
-  farms.schematic.basic:
-    description: Allows selecting basic schematic
-    default: true
-  farms.schematic.desert:
-    description: Allows selecting desert schematic
+
+  farms.admin:
+    description: Allows using /farm admin
+    default: op
+  farms.admin.reload:
+    description: Allows /farm admin reload
+    default: op
+  farms.admin.status:
+    description: Allows /farm admin status
+    default: op
+  farms.admin.tp:
+    description: Allows /farm admin tp
+    default: op
+
+  farms.preset.*:
+    description: Allows selecting any island preset
     default: op

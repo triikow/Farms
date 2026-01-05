@@ -1,20 +1,18 @@
 package com.github.triikow.farms.command.admin;
 
+import com.github.triikow.farms.app.FarmService;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 
 public final class AdminReloadCommand {
 
-    private final JavaPlugin plugin;
+    private final FarmService farmService;
 
-    public AdminReloadCommand(@NotNull JavaPlugin plugin) {
-        this.plugin = plugin;
+    public AdminReloadCommand(FarmService farmService) {
+        this.farmService = farmService;
     }
 
     public LiteralCommandNode<CommandSourceStack> create() {
@@ -25,22 +23,8 @@ public final class AdminReloadCommand {
     }
 
     private int execute(CommandContext<CommandSourceStack> ctx) {
-        CommandSender sender = ctx.getSource().getSender();
-
-        plugin.reloadConfig();
-
-        String messagePrefix = plugin.getConfig().getString(
-                "messages.prefix",
-                "<yellow>[Farms]</yellow> "
-        );
-
-        String reloaded = plugin.getConfig().getString(
-                "messages.admin.reload.success",
-                "<green>Configuration reloaded.</green>"
-        );
-
-        sender.sendRichMessage(messagePrefix + reloaded);
-
+        farmService.reloadAll();
+        farmService.messages().send(ctx.getSource().getSender(), "admin.reload.success");
         return Command.SINGLE_SUCCESS;
     }
 }
