@@ -135,6 +135,15 @@ public final class IslandService {
         }
     }
 
+    public synchronized int getNextIndex() {
+        return yaml.getInt("nextIndex", 0);
+    }
+
+    public synchronized int getPlayerIslandCount() {
+        var section = yaml.getConfigurationSection("players");
+        return section == null ? 0 : section.getKeys(false).size();
+    }
+
     public record IslandPosition(int x, int z) {}
 
     public record PlayerIsland(UUID uuid, int index, IslandPosition position, boolean pasted) {}

@@ -5,11 +5,17 @@ api-version: '1.21'
 softdepend: [WorldEdit]
 
 permissions:
+  farms.admin:
+    description: Allows admin base command
+    default: op
   farms.admin.reload:
     description: Allows reloading the Farms config
     default: op
-  farms.admin.setup:
-    description: Allows using /farm admin setup to create void world
+  farms.admin.tp:
+    description: Allows teleporting to the Farms world
+    default: op
+  farms.admin.status:
+    description: Shows Farm diagnostics and status info
     default: op
   farms.create:
     description: Allows using /farm create

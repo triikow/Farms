@@ -8,7 +8,6 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -18,15 +17,18 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class FarmCreateCommand {
 
     private final JavaPlugin plugin;
+    private final WorldService worldService;
     private final IslandService islandService;
     private final IslandSchematicService islandSchematicService;
 
     public FarmCreateCommand(
             JavaPlugin plugin,
+            WorldService worldService,
             IslandService islandService,
             IslandSchematicService islandSchematicService
     ) {
         this.plugin = plugin;
+        this.worldService = worldService;
         this.islandService = islandService;
         this.islandSchematicService = islandSchematicService;
     }
@@ -47,7 +49,7 @@ public final class FarmCreateCommand {
         }
 
         String worldName = plugin.getConfig().getString("world.name", "farms");
-        World world = Bukkit.getWorld(worldName);
+        World world = worldService.loadOrCreateVoidWorld(worldName);
 
         if (world == null) {
             player.sendRichMessage("<gray>World '<white>" + worldName + "</white>' does not exist.</gray>");

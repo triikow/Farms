@@ -2,6 +2,7 @@ package com.github.triikow.farms.world;
 
 import org.bukkit.*;
 
+import java.io.File;
 import java.util.Locale;
 
 public final class WorldService {
@@ -14,16 +15,29 @@ public final class WorldService {
 
     private final VoidChunkGenerator voidChunkGenerator = new VoidChunkGenerator();
 
-    public World createVoidWorld(String worldName) {
+    public World loadOrCreateVoidWorld(String worldName) {
         String name = normalizeWorldName(worldName);
+
+        World loaded = Bukkit.getWorld(name);
+        if (loaded != null) {
+            return loaded;
+        }
+
+        File folder = new File(Bukkit.getWorldContainer(), name);
+        boolean existedOnDisk = folder.exists();
+
         WorldCreator creator = new WorldCreator(name)
                 .type(WorldType.FLAT)
                 .generator(voidChunkGenerator)
                 .generateStructures(false);
 
         World world = Bukkit.createWorld(creator);
-        if (world != null) {
-           generateSpawnPlatform(world);
+        if (world == null) {
+            return null;
+        }
+
+        if (!existedOnDisk) {
+            generateSpawnPlatform(world);
         }
 
         return world;

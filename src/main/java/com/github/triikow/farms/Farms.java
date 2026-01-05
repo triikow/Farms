@@ -5,6 +5,7 @@ import com.github.triikow.farms.island.IslandSchematicService;
 import com.github.triikow.farms.island.IslandService;
 import com.github.triikow.farms.world.WorldService;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -34,6 +35,20 @@ public final class Farms extends JavaPlugin {
         this.worldService = new WorldService();
         this.islandService = new IslandService(this);
         this.islandSchematicService = new IslandSchematicService(schematicsDir);
+
+        String worldName = getConfig().getString("world.name", "farms");
+        World farmsWorld = worldService.loadOrCreateVoidWorld(worldName);
+
+        if (farmsWorld == null) {
+            getLogger().severe("Failed to load or create farms world: " + worldName);
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
+        getLogger().info("Farms world ready: " + farmsWorld.getName()
+                + " | spawn=" + farmsWorld.getSpawnLocation().getBlockX()
+                + "," + farmsWorld.getSpawnLocation().getBlockY()
+                + "," + farmsWorld.getSpawnLocation().getBlockZ());
 
         this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             event.registrar().register(
