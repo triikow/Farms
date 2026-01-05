@@ -18,18 +18,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class FarmCreateCommand {
 
     private final JavaPlugin plugin;
-    private final WorldService worldService;
     private final IslandService islandService;
     private final IslandSchematicService islandSchematicService;
 
     public FarmCreateCommand(
             JavaPlugin plugin,
-            WorldService worldService,
             IslandService islandService,
             IslandSchematicService islandSchematicService
     ) {
         this.plugin = plugin;
-        this.worldService = worldService;
         this.islandService = islandService;
         this.islandSchematicService = islandSchematicService;
     }
@@ -53,16 +50,12 @@ public final class FarmCreateCommand {
         World world = Bukkit.getWorld(worldName);
 
         if (world == null) {
-            world = worldService.createVoidWorld(worldName);
-        }
-
-        if (world == null) {
-            player.sendRichMessage("<red>Failed to access or create farms world.</red>");
+            player.sendRichMessage("<gray>World '<white>" + worldName + "</white>' does not exist.</gray>");
             return Command.SINGLE_SUCCESS;
         }
 
         IslandService.IslandPosition pos = islandService.allocateNext();
-        Location spawn = islandSchematicService.createIslandPlatform(world, pos.x(), pos.z());
+        Location spawn = islandSchematicService.pasteIsland(world, pos.x(), pos.z());
 
         player.teleport(spawn);
         player.sendRichMessage("<green>Island created at </green><white>" + pos.x() + ", " + pos.z() + "</white><green>.</green>");

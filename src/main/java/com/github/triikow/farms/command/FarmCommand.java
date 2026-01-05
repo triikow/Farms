@@ -17,7 +17,7 @@ public final class FarmCommand {
     public static LiteralCommandNode<CommandSourceStack> create(JavaPlugin plugin, WorldService worldService, IslandService islandService, IslandSchematicService islandSchematicService) {
         return Commands.literal("farm")
                 .then(AdminCommand.create(plugin, worldService))
-                .then(new FarmCreateCommand(plugin, worldService, islandService, islandSchematicService).create())
+                .then(new FarmCreateCommand(plugin, islandService, islandSchematicService).create())
                 .build();
     }
 }

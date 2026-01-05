@@ -43,7 +43,7 @@ public final class IslandService {
         int n = islandNumber;
 
         int r = minSteps;
-        int ringCount = 8 * r; // r>=1 => 8r
+        int ringCount = 8 * r;
 
         while (n >= ringCount) {
             n -= ringCount;
