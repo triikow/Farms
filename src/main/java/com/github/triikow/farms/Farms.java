@@ -61,5 +61,16 @@ public final class Farms extends JavaPlugin {
                     "Farms root command"
             );
         });
+
+        getServer().getPluginManager().registerEvents(
+                new com.github.triikow.farms.gui.listener.FarmGuiListener(
+                        this,
+                        worldService,
+                        islandService,
+                        islandSchematicService,
+                        schematicRegistry
+                ),
+                this
+        );
     }
 }

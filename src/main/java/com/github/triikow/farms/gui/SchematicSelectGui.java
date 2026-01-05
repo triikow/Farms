@@ -1,13 +1,18 @@
 package com.github.triikow.farms.gui;
 
 import com.github.triikow.farms.schematic.SchematicOption;
+import io.papermc.paper.text.PaperComponents;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import net.kyori.adventure.text.minimessage.MiniMessage;
+
 import java.util.List;
 
 public final class SchematicSelectGui {
+
+    private static final MiniMessage MM = MiniMessage.miniMessage();
 
     public Inventory create(List<SchematicOption> options, java.util.function.Predicate<SchematicOption> canUse) {
         var filtered = options.stream().filter(canUse).toList();
@@ -18,7 +23,8 @@ public final class SchematicSelectGui {
         int size = rows * 9;
 
         var holder = new SchematicSelectHolder();
-        Inventory inv = Bukkit.createInventory(holder, size, "Choose your island");
+        Inventory inv = Bukkit.createInventory(holder, size, MM.deserialize("<green>Choose your island</green>"));
+
         holder.bind(inv);
 
         int index = 0;
@@ -36,9 +42,9 @@ public final class SchematicSelectGui {
 
                 ItemStack item = new ItemStack(opt.item());
                 var meta = item.getItemMeta();
-                meta.setDisplayName(opt.displayName());
-                meta.setLore(java.util.List.of(
-                        "<gray>Click to select</gray>"
+                meta.displayName(MM.deserialize(opt.displayName()));
+                meta.lore(java.util.List.of(
+                        MM.deserialize("<gray>Click to select</gray>")
                 ));
                 item.setItemMeta(meta);
 
