@@ -54,12 +54,23 @@ public final class FarmCreateCommand {
             return Command.SINGLE_SUCCESS;
         }
 
-        IslandService.IslandPosition pos = islandService.allocateNext();
-        Location spawn = islandSchematicService.pasteIsland(world, pos.x(), pos.z());
+        var island = islandService.getOrAllocate(player.getUniqueId());
+
+        Location spawn;
+        if (!island.pasted()) {
+            spawn = islandSchematicService.pasteIsland(world, island.position().x(), island.position().z());
+            islandService.markPasted(player.getUniqueId());
+
+            player.sendRichMessage("<green>Island created at </green><white>"
+                    + island.position().x() + ", " + island.position().z()
+                    + "</white><green>.</green>");
+        } else {
+            spawn = islandSchematicService.getIslandSpawn(world, island.position().x(), island.position().z());
+
+            player.sendRichMessage("<yellow>You already have an island. Teleporting you there...</yellow>");
+        }
 
         player.teleport(spawn);
-        player.sendRichMessage("<green>Island created at </green><white>" + pos.x() + ", " + pos.z() + "</white><green>.</green>");
-
         return Command.SINGLE_SUCCESS;
     }
 }

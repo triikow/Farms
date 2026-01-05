@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 public final class IslandService {
 
@@ -23,17 +24,48 @@ public final class IslandService {
         this.yaml = YamlConfiguration.loadConfiguration(file);
     }
 
-    public IslandPosition allocateNext() {
-        int nextIndex = yaml.getInt("nextIndex", 0);
+    public synchronized PlayerIsland getOrAllocate(UUID uuid) {
+        PlayerIsland existing = getIsland(uuid);
+        if (existing != null) {
+            return existing;
+        }
 
-        IslandPosition pos = computePosition(nextIndex);
+        int index = yaml.getInt("nextIndex", 0);
+        yaml.set("nextIndex", index + 1);
 
-        yaml.set("nextIndex", nextIndex + 1);
-        yaml.set("islands." + nextIndex + ".x", pos.x());
-        yaml.set("islands." + nextIndex + ".z", pos.z());
+        IslandPosition pos = computePosition(index);
+
+        String base = "players." + uuid;
+        yaml.set(base + ".index", index);
+        yaml.set(base + ".x", pos.x());
+        yaml.set(base + ".z", pos.z());
+        yaml.set(base + ".pasted", false);
+
         saveQuietly();
 
-        return pos;
+        return new PlayerIsland(uuid, index, pos, false);
+    }
+
+    public synchronized void markPasted(UUID uuid) {
+        String base = "players." + uuid;
+        if (!yaml.contains(base)) return;
+
+        yaml.set(base + ".pasted", true);
+        saveQuietly();
+    }
+
+    public synchronized PlayerIsland getIsland(UUID uuid) {
+        String base = "players." + uuid;
+        if (!yaml.contains(base + ".x") || !yaml.contains(base + ".z")) {
+            return null;
+        }
+
+        int x = yaml.getInt(base + ".x");
+        int z = yaml.getInt(base + ".z");
+        int index = yaml.getInt(base + ".index", -1);
+        boolean pasted = yaml.getBoolean(base + ".pasted", false);
+
+        return new PlayerIsland(uuid, index, new IslandPosition(x, z), pasted);
     }
 
     private IslandPosition computePosition(int islandNumber) {
@@ -104,4 +136,6 @@ public final class IslandService {
     }
 
     public record IslandPosition(int x, int z) {}
+
+    public record PlayerIsland(UUID uuid, int index, IslandPosition position, boolean pasted) {}
 }

@@ -66,4 +66,9 @@ public final class IslandSchematicService {
         }
     }
 
+    public Location getIslandSpawn(World world, int centerX, int centerZ) {
+        return new Location(world, centerX + 0.5, Y + 1, centerZ + 0.5);
+    }
+
+
 }
